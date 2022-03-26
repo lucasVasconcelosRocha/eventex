@@ -3,21 +3,18 @@ package br.com.lrvasconcelos.eventex.api.dto;
 import br.com.lrvasconcelos.eventex.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.modelmapper.ModelMapper;
-import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO extends RepresentationModel<UserDTO> {
+public class UserDTO {
 
     @NotNull(message = "Name can't be null.")
     @NotEmpty(message = "Name can't be empty.")

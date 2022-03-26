@@ -2,7 +2,6 @@ package br.com.lrvasconcelos.eventex.api.controller.v1;
 
 import br.com.lrvasconcelos.eventex.api.dto.ResponseUserDTO;
 import br.com.lrvasconcelos.eventex.api.dto.UserDTO;
-import br.com.lrvasconcelos.eventex.api.dto.response.Response;
 import br.com.lrvasconcelos.eventex.domain.entity.User;
 import br.com.lrvasconcelos.eventex.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +23,11 @@ public class UserController {
     private UserServiceImpl service;
 
     @PostMapping
-    public ResponseEntity<Response<ResponseUserDTO>> create(@Valid  @RequestBody UserDTO dto, BindingResult result) {
-
-        Response<ResponseUserDTO> response = new Response<>();
-
-        if(result.hasErrors()) {
-            result.getAllErrors().forEach(error -> response.addErrorMsgToResponse(error.getDefaultMessage()));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        }
+    public ResponseEntity<ResponseUserDTO> create(@RequestBody @Valid UserDTO dto) {
 
         User user = service.create(dto.convertDTOToEntity());
-        response.setData(ResponseUserDTO.convertToUserResponseDTO(user));
 
-        return new ResponseEntity<>( response, HttpStatus.CREATED);
+        return new ResponseEntity<>( ResponseUserDTO.convertToUserResponseDTO(user), HttpStatus.CREATED);
     }
 
 }

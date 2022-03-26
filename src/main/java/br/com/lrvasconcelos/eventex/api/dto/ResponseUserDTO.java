@@ -2,15 +2,15 @@ package br.com.lrvasconcelos.eventex.api.dto;
 
 
 import br.com.lrvasconcelos.eventex.domain.entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.hateoas.RepresentationModel;
 
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ResponseUserDTO extends RepresentationModel<ResponseUserDTO> {
+public class ResponseUserDTO {
 
     private Long id;
     private String name;
