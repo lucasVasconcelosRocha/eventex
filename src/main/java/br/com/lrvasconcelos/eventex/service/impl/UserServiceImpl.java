@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,6 +20,12 @@ public class UserServiceImpl implements UserService {
     public User create(User user) {
         return repository.save(user);
     }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return repository.findById(id);
+    }
+
 
     public boolean isJSONValid(String json) {
         try {

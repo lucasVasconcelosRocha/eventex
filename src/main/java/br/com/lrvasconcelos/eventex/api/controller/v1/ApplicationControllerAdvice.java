@@ -1,6 +1,7 @@
 package br.com.lrvasconcelos.eventex.api.controller.v1;
 
 import br.com.lrvasconcelos.eventex.api.ApiError;
+import br.com.lrvasconcelos.eventex.api.exceptions.UserNotFoundException;
 import com.fasterxml.jackson.core.JsonParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -46,6 +47,11 @@ public class ApplicationControllerAdvice {
     @ExceptionHandler({HttpMessageNotReadableException.class, JsonParseException.class})
     public ResponseEntity<ApiError> handleMessageNotReadableException(Exception exception) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ApiError(exception.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiError> handleUserNotFoundException(UserNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(exception.getMessage()));
     }
 
 }
