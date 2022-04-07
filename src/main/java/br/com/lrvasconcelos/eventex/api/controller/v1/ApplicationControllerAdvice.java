@@ -1,14 +1,16 @@
 package br.com.lrvasconcelos.eventex.api.controller.v1;
 
 import br.com.lrvasconcelos.eventex.api.ApiError;
+import br.com.lrvasconcelos.eventex.api.exceptions.EventNotFoundException;
+import br.com.lrvasconcelos.eventex.api.exceptions.NotParsableContentException;
 import br.com.lrvasconcelos.eventex.api.exceptions.UserNotFoundException;
 import com.fasterxml.jackson.core.JsonParseException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,7 +33,7 @@ public class ApplicationControllerAdvice {
 
         ApiError apiErrors = new ApiError(errors);
 
-        return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(apiErrors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrors);
     }
 
     @ExceptionHandler(ServerErrorException.class)
@@ -54,4 +56,18 @@ public class ApplicationControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(exception.getMessage()));
     }
 
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ApiError> handleMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError(exception.getLocalizedMessage()));
+    }
+
+    @ExceptionHandler(NotParsableContentException.class)
+    public ResponseEntity<ApiError> handleNotParsableContentException(NotParsableContentException exception) {
+        return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(new ApiError(exception.getMessage()));
+    }
+
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ApiError> handleEventNotFoundException(EventNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(exception.getMessage()));
+    }
 }

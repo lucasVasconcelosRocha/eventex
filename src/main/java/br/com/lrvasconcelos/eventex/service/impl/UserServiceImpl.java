@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,6 +28,15 @@ public class UserServiceImpl implements UserService {
         return repository.findById(id);
     }
 
+    @Override
+    public void deleteUser(User user) {
+        repository.delete(user);
+    }
+
+    @Override
+    public List<User> findByEmails(Set<String> emails) {
+        return repository.findUsers(emails);
+    }
 
     public boolean isJSONValid(String json) {
         try {

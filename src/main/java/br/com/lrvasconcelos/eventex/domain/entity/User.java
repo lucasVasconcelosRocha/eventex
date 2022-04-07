@@ -1,9 +1,8 @@
 package br.com.lrvasconcelos.eventex.domain.entity;
 
-import br.com.lrvasconcelos.eventex.api.dto.UserDTO;
+import br.com.lrvasconcelos.eventex.api.dto.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.modelmapper.ModelMapper;
@@ -49,7 +48,7 @@ public class User {
 
     @Column(name = "created_at")
     @CreationTimestamp
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     public User() {
         this.isAdmin = false;
