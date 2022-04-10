@@ -1,6 +1,6 @@
 package br.com.lrvasconcelos.eventex.service.impl;
 
-import br.com.lrvasconcelos.eventex.api.exceptions.EventNotFoundException;
+import br.com.lrvasconcelos.eventex.api.exceptions.ApiNotFoundException;
 import br.com.lrvasconcelos.eventex.api.exceptions.NotParsableContentException;
 import br.com.lrvasconcelos.eventex.domain.entity.Event;
 import br.com.lrvasconcelos.eventex.domain.repositoy.EventsRepository;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -39,7 +40,7 @@ public class EventServiceImpl implements EventService {
                     event.setId(eventExists.getId());
                     repository.save(event);
                     return event;
-                }).orElseThrow(() -> new EventNotFoundException("Event not found!"));
+                }).orElseThrow(() -> new ApiNotFoundException("Event not found!"));
     }
 
     @Override
@@ -47,7 +48,12 @@ public class EventServiceImpl implements EventService {
         repository.findById(id).map(event -> {
             repository.deleteById(event.getId());
             return Void.TYPE;
-        }).orElseThrow(() -> new EventNotFoundException("Event not found!"));
+        }).orElseThrow(() -> new ApiNotFoundException("Event not found!"));
+    }
+
+    @Override
+    public Optional<Event> findById(Long id) {
+        return repository.findById(id);
     }
 
 

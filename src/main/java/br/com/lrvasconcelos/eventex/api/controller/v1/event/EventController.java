@@ -31,11 +31,13 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ResponseEventDTO>> findEvents(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+    public ResponseEntity<List<ResponseEventDTO>> findEventsBetweenDates(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
                                                      @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
 
        List<ResponseEventDTO> result = service.findAllByFilters(startDate, endDate).stream()
-               .map(ResponseEventDTO::convertToEventResponseDTO).collect(Collectors.toList());
+               .map(ResponseEventDTO::convertToEventResponseDTO)
+               .sorted((o1, o2) -> o1.getStartDate().compareTo(o2.getStartDate()))
+               .collect(Collectors.toList());
 
       return new ResponseEntity<>(result, HttpStatus.OK);
 
@@ -51,5 +53,14 @@ public class EventController {
     public ResponseEntity<Void> deleteEvent(@PathVariable("id") Long id) {
         service.deleteEvent(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<ResponseEventDTO>> findEventById(@PathVariable("id") Long id) {
+        List<ResponseEventDTO> result = service.findById(id).stream()
+                .map(ResponseEventDTO::convertToEventResponseDTO)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
  }

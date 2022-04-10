@@ -1,9 +1,8 @@
 package br.com.lrvasconcelos.eventex.api.controller.v1;
 
 import br.com.lrvasconcelos.eventex.api.ApiError;
-import br.com.lrvasconcelos.eventex.api.exceptions.EventNotFoundException;
+import br.com.lrvasconcelos.eventex.api.exceptions.ApiNotFoundException;
 import br.com.lrvasconcelos.eventex.api.exceptions.NotParsableContentException;
-import br.com.lrvasconcelos.eventex.api.exceptions.UserNotFoundException;
 import com.fasterxml.jackson.core.JsonParseException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -51,11 +50,6 @@ public class ApplicationControllerAdvice {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ApiError(exception.getLocalizedMessage()));
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiError> handleUserNotFoundException(UserNotFoundException exception) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(exception.getMessage()));
-    }
-
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ApiError> handleMissingServletRequestParameterException(MissingServletRequestParameterException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError(exception.getLocalizedMessage()));
@@ -66,8 +60,8 @@ public class ApplicationControllerAdvice {
         return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).body(new ApiError(exception.getMessage()));
     }
 
-    @ExceptionHandler(EventNotFoundException.class)
-    public ResponseEntity<ApiError> handleEventNotFoundException(EventNotFoundException exception) {
+    @ExceptionHandler(ApiNotFoundException.class)
+    public ResponseEntity<ApiError> handleApiNotFoundException(ApiNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(exception.getMessage()));
     }
 }

@@ -2,7 +2,7 @@ package br.com.lrvasconcelos.eventex.api.controller.v1.user;
 
 import br.com.lrvasconcelos.eventex.api.dto.user.ResponseUserDTO;
 import br.com.lrvasconcelos.eventex.api.dto.user.UserDTO;
-import br.com.lrvasconcelos.eventex.api.exceptions.UserNotFoundException;
+import br.com.lrvasconcelos.eventex.api.exceptions.ApiNotFoundException;
 import br.com.lrvasconcelos.eventex.domain.entity.User;
 import br.com.lrvasconcelos.eventex.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class UserController {
                     User user = dto.convertDTOToEntity();
                     user.setId(userExists.getId());
                     return service.create(user);
-                }).orElseThrow(() -> new UserNotFoundException("User not found."));
+                }).orElseThrow(() -> new ApiNotFoundException("User not found."));
 
         return new ResponseEntity<>(ResponseUserDTO.convertToUserResponseDTO(userUpdated), HttpStatus.OK);
 
@@ -47,7 +47,7 @@ public class UserController {
     public ResponseEntity<ResponseUserDTO> getUsersById(@PathVariable("id") Long id) {
         ResponseUserDTO response = service.findById(id)
                 .map(ResponseUserDTO::convertToUserResponseDTO)
-                .orElseThrow(() -> new UserNotFoundException("User not found."));
+                .orElseThrow(() -> new ApiNotFoundException("User not found."));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -58,7 +58,7 @@ public class UserController {
                 .map(user -> {
                     service.deleteUser(user);
                     return Void.TYPE;
-                }).orElseThrow(() -> new UserNotFoundException("User not found."));
+                }).orElseThrow(() -> new ApiNotFoundException("User not found."));
     }
 
     @GetMapping
